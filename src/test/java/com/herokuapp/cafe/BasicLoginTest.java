@@ -1,65 +1,68 @@
 package com.herokuapp.cafe;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.testng.Assert;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.concurrent.TimeUnit;
 
 public class BasicLoginTest {
     WebDriver driver;
-        By logoutButton = By.xpath("//p[@ng-click='logout()']");
-        By createEmployeeButton = By.id("bAdd");
-        By updateEmployeeButton = By.xpath("//button[text()='Update']");
-        By editEmployeeButton = By.id("bEdit");
-        By deleteEmployeeButton = By.id("bDelete");
-        By cancelCreationButton = By.xpath("//*[@id=\"sub-nav\"]/li/a");
-        By firstNameField = By.xpath("//input[@ng-model='selectedEmployee.firstName']");
-        By lastNameField = By.xpath("//input[@ng-model='selectedEmployee.lastName']");
-        By startDateField = By.xpath("//input[@ng-model='selectedEmployee.startDate']");
-        By emailField = By.xpath("//input[@ng-model='selectedEmployee.email']");
-        By addEmployeeButton = By.xpath("//button[@ng-show='isCreateForm']");
-        String firstName = "John";
-        String lastName = "Snow";
-        String startDate = "2017-01-01";
-        String email = "avengers@gmail.com";
-        String firstNameUpd = "Tony";
-        String lastNameUpd = "Stark";
-        String startDateUpd = "2018-02-02";
-        String emailUpd = "new_email@gmail.com";
+    By logoutButton = By.xpath("//p[@ng-click='logout()']");
+    By createEmployeeButton = By.id("bAdd");
+    By updateEmployeeButton = By.xpath("//button[text()='Update']");
+    By editEmployeeButton = By.id("bEdit");
+    By deleteEmployeeButton = By.id("bDelete");
+    By cancelCreationButton = By.xpath("//*[@id=\"sub-nav\"]/li/a");
+    By firstNameField = By.xpath("//input[@ng-model='selectedEmployee.firstName']");
+    By lastNameField = By.xpath("//input[@ng-model='selectedEmployee.lastName']");
+    By startDateField = By.xpath("//input[@ng-model='selectedEmployee.startDate']");
+    By emailField = By.xpath("//input[@ng-model='selectedEmployee.email']");
+    By addEmployeeButton = By.xpath("//button[@ng-show='isCreateForm']");
+    String firstName = "John";
+    String lastName = "Snow";
+    String startDate = "2017-01-01";
+    String email = "avengers@gmail.com";
+    String firstNameUpd = "Tony";
+    String lastNameUpd = "Stark";
+    String startDateUpd = "2018-02-02";
+    String emailUpd = "new_email@gmail.com";
 
-//        @BeforeMethod public void initMethod() {
-//            System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
-//            driver = new ChromeDriver();
-//            driver.get("http://cafetownsend-angular-rails.herokuapp.com/login");
-//            driver.manage().window().maximize();
-//            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-//        }
-    @Test public void loginMe() {
-        loginPage lP = new loginPage("Luke", "Skywalker");
-        lP.openLoginPage();
+    @BeforeMethod
+    public void initMethod() {
+        System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
-        public void fillEmployeeData(String name, String lastName, String startDate, String email) {
-            driver.findElement(firstNameField).clear();
-            driver.findElement(lastNameField).clear();
-            driver.findElement(startDateField).clear();
-            driver.findElement(emailField).clear();
-            driver.findElement(firstNameField).sendKeys(name);
-            driver.findElement(lastNameField).sendKeys(lastName);
-            driver.findElement(startDateField).sendKeys(startDate);
-            driver.findElement(emailField).sendKeys(email);
-        }
+    @Test
+    public void loginMe() {
+        LoginPage lP = new LoginPage(driver);
+        lP.openLoginPage();
+        lP.loginUser("Luke", "Skywalker");
+    }
 
-        public WebElement searchUser(String name, String lastName) throws InterruptedException {
-            WebElement element = driver.findElement(By.xpath("//li[contains(text(), '" + name + " " + lastName + "')]"));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            Thread.sleep(500);
-            return element;
-        }
+/*    public void fillEmployeeData(String name, String lastName, String startDate, String email) {
+        driver.findElement(firstNameField).clear();
+        driver.findElement(lastNameField).clear();
+        driver.findElement(startDateField).clear();
+        driver.findElement(emailField).clear();
+        driver.findElement(firstNameField).sendKeys(name);
+        driver.findElement(lastNameField).sendKeys(lastName);
+        driver.findElement(startDateField).sendKeys(startDate);
+        driver.findElement(emailField).sendKeys(email);
+    }
 
+    public WebElement searchUser(String name, String lastName) throws InterruptedException {
+        WebElement element = driver.findElement(By.xpath("//li[contains(text(), '" + name + " " + lastName + "')]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        Thread.sleep(500);
+        return element;
+    }
+*/
 /*        @Test(priority = 2) public void createEmployee() throws InterruptedException {
             driver.findElement(createEmployeeButton).click();
             fillEmployeeData(firstName, lastName, startDate, email);
